@@ -1,17 +1,25 @@
 package reservationsalles.model;
-
 import jakarta.persistence.*;
-import lombok.Data;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity
-@Data
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank(message = "Email is required")
+    @Email(message = "Invalid email format")
+    @Column(unique = true)
     private String email;
+
+    @NotBlank(message = "Password is required")
     private String password;
+
     private String role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
