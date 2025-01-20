@@ -6,10 +6,10 @@ import reservationsalles.model.Room;
 import reservationsalles.repository.RoomRepository;
 
 import java.util.List;
-import java.util.Date;
 
 @Service
 public class RoomService {
+
     @Autowired
     private RoomRepository roomRepository;
 
@@ -37,5 +37,10 @@ public class RoomService {
         room.setEquipment(equipment);
         return roomRepository.save(room);
     }
-}
 
+    // Add the createRoom method
+    public Room createRoom(Room room) {
+        // Save the new room to the database
+        return roomRepository.save(room);
+    }
+}
