@@ -72,13 +72,18 @@
   <div class="flex justify-center p-4 ml-32">
     <div class="w-full max-w-3xl">
       <h2 class="text-2xl font-semibold mb-4">Les chambres</h2>
-      <div *ngIf="rooms.length === 0" class="text-center text-gray-500">
+      <div *ngIf="rooms.length === 0 && !loading" class="text-center text-gray-500">
         <p>No rooms available. Create a new room!</p>
       </div>
-      <div *ngFor="let room of rooms" class="bg-white shadow-md rounded-lg p-4 mb-4 flex justify-between items-center">
-        <div class="flex-1">
-          <h3 class="text-xl font-medium">{{ room.name }}</h3>
-          <p class="text-gray-500">{{ room.description }}</p>
+      <div *ngIf="loading" class="text-center text-gray-500">
+        <p>Loading rooms...</p>
+      </div>
+      <div *ngFor="let room of rooms" class="bg-white shadow-md rounded-lg p-4 mb-4">
+        <div class="mb-2">
+          <h3 class="text-xl font-medium">Room Number: {{ room.number }}</h3>
+          <p class="text-gray-500">Capacity: {{ room.capacity }}</p>
+          <p class="text-gray-500">Available: {{ room.available ? 'Yes' : 'No' }}</p>
+          <p class="text-gray-500">Equipment: {{ room.equipment || 'None' }}</p>
         </div>
         <div class="flex space-x-2">
           <button 
@@ -95,6 +100,8 @@
       </div>
     </div>
   </div>
+  
+  
   
   
   

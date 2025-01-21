@@ -210,20 +210,38 @@
         <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
             <h2 class="text-2xl font-semibold mb-4 text-center">Room Information</h2>
         
-            <form id="roomForm">
+            <!-- Bind the form to roomForm -->
+            <form [formGroup]="roomForm" (ngSubmit)="submitRoom()">
                 <div class="mb-4">
                     <label for="numeroSalle" class="block text-gray-700 font-medium mb-2">Room Number:</label>
-                    <input type="number" id="numeroSalle" name="numeroSalle" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <input 
+                        type="number" 
+                        id="numeroSalle" 
+                        formControlName="numeroSalle"  
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        required
+                    >
                 </div>
         
                 <div class="mb-4">
                     <label for="capacite" class="block text-gray-700 font-medium mb-2">Capacity:</label>
-                    <input type="number" id="capacite" name="capacite" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <input 
+                        type="number" 
+                        id="capacite" 
+                        formControlName="capacite" 
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        required
+                    >
                 </div>
         
                 <div class="mb-4">
                     <label for="disponibilite" class="block text-gray-700 font-medium mb-2">Availability:</label>
-                    <select id="disponibilite" name="disponibilite" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <select 
+                        id="disponibilite" 
+                        formControlName="disponibilite" 
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        required
+                    >
                         <option value="available">Available</option>
                         <option value="unavailable">Unavailable</option>
                     </select>
@@ -231,7 +249,13 @@
         
                 <div class="mb-4">
                     <label for="equipment" class="block text-gray-700 font-medium mb-2">Equipment:</label>
-                    <select id="equipment" name="equipment[]" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" multiple required>
+                    <select 
+                        id="equipment" 
+                        formControlName="equipment" 
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        multiple 
+                        required
+                    >
                         <option value="Projector">Projector</option>
                         <option value="Whiteboard">Whiteboard</option>
                         <option value="Markers">Markers</option>
@@ -248,7 +272,12 @@
                 </div>
         
                 <div class="text-center">
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:ring-2 focus:ring-blue-300">Submit</button>
+                    <button
+                        type="submit"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+                    >
+                        Submit
+                    </button>
                 </div>
             </form>
         </div>

@@ -1,36 +1,56 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-chambres',
   standalone: true,
-  imports: [CommonModule,
-    RouterModule,],
+  imports: [CommonModule, RouterModule,HttpClientModule],
   templateUrl: './chambres.component.html',
-  styleUrl: './chambres.component.css'
+  styleUrls: ['./chambres.component.css'],
 })
-export class ChambresComponent {
-  rooms = [
-    { id: 1, name: 'Room 1', description: 'This is a description for Room 1.' },
-    { id: 2, name: 'Room 2', description: 'This is a description for Room 2.' },
-    { id: 3, name: 'Room 3', description: 'This is a description for Room 3.' },
-  ];
+export class ChambresComponent implements OnInit {
+  rooms: any[] = [];
+  loading: boolean = false;
 
-  constructor() { }
+  private apiUrl = 'http://localhost:8009/api/rooms';
+
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    // Load rooms from backend or local storage
+    this.fetchRooms();
+  }
+
+  fetchRooms(): void {
+    this.loading = true;
+    this.http.get<any[]>(this.apiUrl).subscribe({
+      next: (data) => {
+        this.rooms = data;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error fetching rooms:', err);
+        this.loading = false;
+      },
+    });
   }
 
   editRoom(room: any): void {
-    // Logic to edit the room (e.g., open a form or navigate to a room editing page)
     console.log('Edit room:', room);
   }
 
   deleteRoom(roomId: number): void {
-    // Logic to delete the room (e.g., make an API call to delete)
-    this.rooms = this.rooms.filter(room => room.id !== roomId);
-    console.log('Deleted room with ID:', roomId);
+    // Make an HTTP DELETE request to the backend
+    this.http.delete(`${this.apiUrl}/${roomId}`).subscribe({
+      next: () => {
+        // Filter the room out from the local list of rooms after successful deletion
+        this.rooms = this.rooms.filter((room) => room.id !== roomId);
+        console.log('Deleted room with ID:', roomId);
+      },
+      error: (err) => {
+        console.error('Error deleting room:', err);
+      },
+    });
   }
 }
