@@ -4,6 +4,7 @@ import { RegisterComponent } from './register/register.component';
 import { DashboardadminComponent } from './dashboardadmin/dashboardadmin.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ChambresComponent } from './chambres/chambres.component';
+import { DeconnexionComponent } from './deconnexion/deconnexion.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -12,6 +13,8 @@ export const routes: Routes = [
     { path: 'dash', component: DashboardadminComponent },
     { path: 'profile', component: ProfileComponent },
     { path: 'chambres', component: ChambresComponent },
+    { path: 'deconnexion', component: DeconnexionComponent },
+    
     
     
 
