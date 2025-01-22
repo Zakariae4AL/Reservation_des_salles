@@ -2,17 +2,19 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-chambres',
   standalone: true,
-  imports: [CommonModule, RouterModule,HttpClientModule],
+  imports: [CommonModule, RouterModule,HttpClientModule,FormsModule],
   templateUrl: './chambres.component.html',
   styleUrls: ['./chambres.component.css'],
 })
 export class ChambresComponent implements OnInit {
   rooms: any[] = [];
   loading: boolean = false;
+  editingRoom: any = null;
 
   private apiUrl = 'http://localhost:8009/api/rooms';
 
@@ -36,10 +38,33 @@ export class ChambresComponent implements OnInit {
     });
   }
 
+  // Start editing a room by creating a copy
   editRoom(room: any): void {
-    console.log('Edit room:', room);
+    this.editingRoom = { ...room }; // Create a copy of the room for editing
   }
 
+  // Save the updated room to the backend
+  saveRoom(): void {
+    if (this.editingRoom) {
+      this.http
+        .put(`http://localhost:8009/api/rooms/${this.editingRoom.id}`, this.editingRoom)
+        .subscribe(
+          (response) => {
+            console.log('Room updated successfully', response);
+            this.fetchRooms(); // Reload rooms after updating
+            this.editingRoom = null; // Reset editing state
+          },
+          (error) => {
+            console.error('Error updating room', error);
+          }
+        );
+    }
+  }
+
+  // Cancel the edit operation
+  cancelEdit(): void {
+    this.editingRoom = null; // Reset editing state
+  }
   deleteRoom(roomId: number): void {
     // Make an HTTP DELETE request to the backend
     this.http.delete(`http://localhost:8009/api/rooms/${roomId}`).subscribe({
@@ -55,4 +80,7 @@ export class ChambresComponent implements OnInit {
       },
     });
   }
+
+  
+  
 }

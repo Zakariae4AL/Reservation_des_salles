@@ -78,24 +78,48 @@
       <div *ngIf="loading" class="text-center text-gray-500">
         <p>Loading rooms...</p>
       </div>
+  
       <div *ngFor="let room of rooms" class="bg-white shadow-md rounded-lg p-4 mb-4">
-        <div class="mb-2">
-          <h3 class="text-xl font-medium">Room Number: {{ room.number }}</h3>
-          <p class="text-gray-500">Capacity: {{ room.capacity }}</p>
-          <p class="text-gray-500">Available: {{ room.available ? 'Yes' : 'No' }}</p>
-          <p class="text-gray-500">Equipment: {{ room.equipment || 'None' }}</p>
+        <div *ngIf="editingRoom && editingRoom.id === room.id">
+          <!-- If we're editing the room, show this form -->
+          <div class="mb-2">
+            <label for="roomNumber" class="block">Room Number:</label>
+            <input id="roomNumber" [(ngModel)]="editingRoom.number" class="form-input" />
+          </div>
+          <div class="mb-2">
+            <label for="capacity" class="block">Capacity:</label>
+            <input id="capacity" [(ngModel)]="editingRoom.capacity" class="form-input" />
+          </div>
+          <div class="mb-2">
+            <label for="equipment" class="block">Equipment:</label>
+            <input id="equipment" [(ngModel)]="editingRoom.equipment" class="form-input" />
+          </div>
+          <div class="flex space-x-2">
+            <button (click)="saveRoom()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
+              Save
+            </button>
+            <button (click)="cancelEdit()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700">
+              Cancel
+            </button>
+          </div>
         </div>
-        <div class="flex space-x-2">
-          <button 
-            (click)="editRoom(room)" 
-            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
-            Edit
-          </button>
-          <button 
-            (click)="deleteRoom(room.id)" 
-            class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700">
-            Delete
-          </button>
+  
+        <!-- If not editing, show the room details and edit/delete buttons -->
+        <div *ngIf="!editingRoom || editingRoom.id !== room.id">
+          <div class="mb-2">
+            <h3 class="text-xl font-medium">Room Number: {{ room.number }}</h3>
+            <p class="text-gray-500">Capacity: {{ room.capacity }}</p>
+            <p class="text-gray-500">Available: {{ room.available ? 'Yes' : 'No' }}</p>
+            <p class="text-gray-500">Equipment: {{ room.equipment || 'None' }}</p>
+          </div>
+          <div class="flex space-x-2">
+            <button (click)="editRoom(room)" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
+              Edit
+            </button>
+            <button (click)="deleteRoom(room.id)" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700">
+              Delete
+            </button>
+          </div>
         </div>
       </div>
     </div>
