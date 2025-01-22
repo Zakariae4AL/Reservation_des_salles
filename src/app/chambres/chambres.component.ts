@@ -42,14 +42,16 @@ export class ChambresComponent implements OnInit {
 
   deleteRoom(roomId: number): void {
     // Make an HTTP DELETE request to the backend
-    this.http.delete(`${this.apiUrl}/${roomId}`).subscribe({
+    this.http.delete(`http://localhost:8009/api/rooms/${roomId}`).subscribe({
       next: () => {
-        // Filter the room out from the local list of rooms after successful deletion
+        // Assuming 'rooms' is an array that holds the list of rooms
         this.rooms = this.rooms.filter((room) => room.id !== roomId);
         console.log('Deleted room with ID:', roomId);
+        alert('Room deleted successfully!');
       },
       error: (err) => {
         console.error('Error deleting room:', err);
+        alert('An error occurred while deleting the room.');
       },
     });
   }
