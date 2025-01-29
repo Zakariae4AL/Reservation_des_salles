@@ -1,5 +1,7 @@
 package reservationsalles.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reservationsalles.model.Room;
@@ -10,9 +12,25 @@ import java.util.List;
 @Service
 public class RoomService {
 
+    private static final Logger logger = LoggerFactory.getLogger(RoomService.class);
+
     @Autowired
     private RoomRepository roomRepository;
+    public List<Room> searchRoomsByEquipment(String equipment) {
+        logger.info("Searching for rooms with equipment: {}", equipment);
+        return roomRepository.findByEquipmentContainingIgnoreCase(equipment);
+    }
 
+    public Room getRoomByNumber(String number) {
+        logger.info("Searching for room with number: {}", number);
+        Room room = roomRepository.findByNumber(number);
+        if (room != null) {
+            logger.info("Found room: {}", room);
+        } else {
+            logger.warn("No room found with number: {}", number);
+        }
+        return room;
+    }
     public List<Room> getAllRooms() {
         return roomRepository.findAll();
     }

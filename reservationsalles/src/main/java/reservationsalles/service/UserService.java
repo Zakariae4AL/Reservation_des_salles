@@ -13,15 +13,24 @@ public class UserService {
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public User registerUser(User user) {
-        if (userRepository.findByEmail(user.getEmail()) != null) {
-            throw new RuntimeException("Email already exists");
+        // Vérifier si l'utilisateur existe déjà dans la base de données
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new RuntimeException("L'email est déjà pris");
         }
-        if (user.getPassword() == null || user.getPassword().isEmpty()) {
-            throw new IllegalArgumentException("Password cannot be null or empty");
-        }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+
+        // Enregistrer l'utilisateur
+        return userRepository.save(user); // Retourne l'utilisateur enregistré
     }
+
+    public User validateUser(String email, String password) {
+        // Vérification de l'utilisateur dans la base de données
+        User user = userRepository.findByEmail(email);
+        if (user != null && user.getPassword().equals(password)) {
+            return user;  // Connexion réussie
+        }
+        return null;  // Identifiants invalides
+    }
+
 
     public String loginUser(String email, String password) {
         User user = userRepository.findByEmail(email);
@@ -31,5 +40,11 @@ public class UserService {
         }
         throw new RuntimeException("Invalid email or password");
     }
+
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+
 }
 
